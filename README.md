@@ -1,1 +1,1 @@
-# eLibrary
+eLibrary project for Blockchain Fundamentals course.
