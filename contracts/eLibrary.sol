@@ -24,7 +24,7 @@ contract eLibrary {
     bool private bookAvailable;
     uint private discountPoints = 0;
 
-    event BookBorrowed (address member, uint isbn, string message);
+    event BookBorrowed (address member, uint isbn);
     event logReturnedBook(uint _isbn, address memberAddress);
 
     constructor(){  //definisala sam librariana i stavila da je on message sender
@@ -111,5 +111,49 @@ contract eLibrary {
         delete libraryUsers[_addr];
     }
 
+     //Function for adding books if it is not already available
+    function addBook (uint _isbn, string memory _title, string memory _author) external isLibrarian isBookNotAvailable(_isbn) {
+        booksInLibrary[_isbn] = Book({
+                                         ISBN: _isbn,
+                                         title: _title,
+                                         author: _author
+        });
+    }
 
+    //function to delete books from library
+    function removeBook (uint _isbn) external isLibrarian isBookAvailable(_isbn) {
+        delete booksInLibrary[_isbn];
+    }
+
+    //function to borrow a book
+    function borrowBook (uint _isbn) external isLibraryUser(msg.sender) isBookAvailable(_isbn) increasepoints{
+
+        Book memory book1 = booksInLibrary[_isbn];
+       
+        //work with temporary variables and then assign the modified array back to storage.
+
+        Book[] storage userBorrowedBooks = borrowedBooks[msg.sender];
+        userBorrowedBooks.push(book1);
+        borrowedBooks[msg.sender] = userBorrowedBooks;
+        delete booksInLibrary[_isbn];
+
+        emit BookBorrowed(msg.sender, _isbn);
+    }
+
+    function returnBook(uint _isbn) external isLibraryUser(msg.sender){
+
+         Book[] storage userBorrowedBooks1 = borrowedBooks[msg.sender];
+         
+         //Checking if there is any book in the aray
+         require(userBorrowedBooks1.length > 0, "There is no book to be returned!");
+
+         for (uint i = 0; i < userBorrowedBooks1.length; i++){
+            if(userBorrowedBooks1[i].ISBN == _isbn){
+                booksInLibrary[_isbn] = userBorrowedBooks1[i];
+                delete userBorrowedBooks1[i];
+                emit logReturnedBook(_isbn, msg.sender);
+            }
+         }
+
+    }
 }
