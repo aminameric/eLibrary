@@ -12,6 +12,12 @@ contract eLibrary {
         string email;
     }
 
+    struct Book {
+        uint ISBN;
+        string title;
+        string author;
+    }
+
 
 
 }
