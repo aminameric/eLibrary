@@ -18,6 +18,14 @@ contract eLibrary {
         string author;
     }
 
+    address private librarian;
+    uint private membershipCost;
+    bool private userCheck;
+    bool private bookAvailable;
+    uint private discountPoints = 0;
+
+    event BookBorrowed (address member, uint isbn, string message);
+
 
 
 }
