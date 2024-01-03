@@ -22,7 +22,6 @@ contract eLibrary {
     uint private membershipCost;
     bool private userCheck;
     bool private bookAvailable;
-    uint private discountPoints = 0;
 
     event BookBorrowed (address member, uint isbn);
     event logReturnedBook(uint _isbn, address memberAddress);
@@ -34,6 +33,7 @@ contract eLibrary {
     mapping(address => User) private libraryUsers;
     mapping(address => Book[]) private borrowedBooks; //svaki user ima svoj array of borrowed books
     mapping(uint => Book) private booksInLibrary; //Kada user treba da podigne knjigu, prvo treba provjeriti da li ima u library, pa ako ima onda ta knjiga ide u borrowed book mapping
+    mapping(address => uint) private discountPoints;
 
     modifier isLibrarian (){  //modifier for libraryan access
         require(msg.sender == librarian, "Librarian access required!");
@@ -76,26 +76,26 @@ contract eLibrary {
         _;
     }
 
-    //increase points if book is borrowed
-    modifier increasepoints (){
+    //increase points if book is borrowed for the user that has borrowed the book
+    modifier increasepoints (address _addr){
         _;
-        discountPoints += 1;
+        discountPoints[_addr]+=1;
     }
 
     //Function for setting membership costs 
     function setMembershipCost(uint _cost) external isLibrarian {
 
-        if(discountPoints == 5){
-            membershipCost = _cost - 1;  //Ne znamo da kako da stavimo discount (npr smanjili bi cijenu za 1, ali ne znamo kako to ide sa whei ili ether, a ne moze u procentima jer ne podrzava float)
+        if(discountPoints[msg.sender] == 5){
+            membershipCost = _cost - 1*10**18;  //decreasing for one ether
         }
         else{
-            membershipCost = _cost*10**18;
+            membershipCost = _cost*10**18; //mapping za dicounted cijene sddr->uint 
         }
     }
 
     //Paying yearly membership subscrition, if user is not in librrayUsers, than he has not payed the membership jet. When he pays to librarian, he gets added to the libraryUsers mapping
     function payingMembership(string memory _name, string memory _surname, uint _phoneNumber, string memory _email) external payable isEnougMoney isNotLibraryUser(msg.sender){
-        (bool payment,) = librarian.call{value: msg.value}("");
+        (bool payment,) = librarian.call{value: msg.value}(""); //vise librarians
         require(payment, "Failed to pay the membership subscription!");
         libraryUsers[msg.sender] = User({
                                         userId: msg.sender,
@@ -103,15 +103,15 @@ contract eLibrary {
                                         surname: _surname,
                                         phoneNumber: _phoneNumber,
                                         email: _email                              
-        }); //samo ce se izvrsiti dodavanje usera, ako je payment true
+        }); //adding user, if payment is true
     }
 
-    //removing member
+    
     function removeMember (address _addr) external isLibrarian isLibraryUser(_addr) {
         delete libraryUsers[_addr];
     }
 
-     //Function for adding books if it is not already available
+     
     function addBook (uint _isbn, string memory _title, string memory _author) external isLibrarian isBookNotAvailable(_isbn) {
         booksInLibrary[_isbn] = Book({
                                          ISBN: _isbn,
@@ -120,13 +120,13 @@ contract eLibrary {
         });
     }
 
-    //function to delete books from library
+    
     function removeBook (uint _isbn) external isLibrarian isBookAvailable(_isbn) {
         delete booksInLibrary[_isbn];
     }
 
     //function to borrow a book
-    function borrowBook (uint _isbn) external isLibraryUser(msg.sender) isBookAvailable(_isbn) increasepoints{
+    function borrowBook (uint _isbn) external isLibraryUser(msg.sender) isBookAvailable(_isbn) increasepoints(msg.sender){
 
         Book memory book1 = booksInLibrary[_isbn];
        
@@ -150,10 +150,14 @@ contract eLibrary {
          for (uint i = 0; i < userBorrowedBooks1.length; i++){
             if(userBorrowedBooks1[i].ISBN == _isbn){
                 booksInLibrary[_isbn] = userBorrowedBooks1[i];
-                delete userBorrowedBooks1[i];
+                delete userBorrowedBooks1[i]; //pitaj
                 emit logReturnedBook(_isbn, msg.sender);
             }
          }
 
     }
 }
+
+/*Uint currentYear = (block. timestamp / 31557600) + 1970;
+Aldin Kovačević11:22 AM
+address => uint[] user => godine*/
