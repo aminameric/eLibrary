@@ -10,6 +10,8 @@ $('#connect').click(async function () {
         $('#connect').hide();
         $('#connectedAddress').css('display', 'block');
         $('#connectedAddress > span').html(addresses[0]);
+
+        window.location.href = 'books.html';
     }
     
 });
