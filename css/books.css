@@ -1,0 +1,71 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: blanchedalmond;
+    background-size:cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 70vh;
+    width: 100%;
+    position: relative;
+    
+}
+
+.content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    text-align: center;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    z-index: 1; /* Ensure the content is above the overlay */
+}
+
+
+.books-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 50px;
+}
+
+.book-list {
+    width: 30%;
+}
+
+.book-list h2 {
+    font-size: 20px;
+}
+
+.book-list ul {
+    list-style-type: none;
+    padding: 20;
+}
+
+.book-list li {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.borrow-button {
+    width: 30%;
+    text-align: center;
+}
+
+#borrow {
+    font-size: 18px;
+    padding: 10px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#borrow:hover {
+    background-color: #45a049;
+}
