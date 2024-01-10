@@ -5,7 +5,7 @@ require("dotenv").config();
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
   solidity: {
-    version: "0.8.19",
+    version: "0.8.18",
     settings: {
       optimizer: {
         enabled: true,
@@ -13,4 +13,13 @@ module.exports = {
       },
     },
   }, 
+  networks: {
+    sepolia: {
+      url: `https://eth-sepolia.g.alchemy.com/v2/${process.env.API_KEY}`,
+      accounts: [process.env.SECRET_KEY],
+    },
+  },
+  etherscan: {
+    apiKey: process.env.ETHERSCAN_API,
+  },
 };
