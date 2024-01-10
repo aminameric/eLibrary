@@ -12,14 +12,5 @@ $('#connect').click(async function () {
         $('#connectedAddress > span').html(addresses[0]);
     }
     
-})
-
-document.addEventListener('DOMContentLoaded', () => {
-    // Add click event listener to the "Connect to MetaMask" button
-    document.getElementById('connect').addEventListener('click', () => {
-        // Redirect to the page with books (replace 'books.html' with your actual page)
-        window.location.href = 'books.html';
-    });
-
-
 });
+
