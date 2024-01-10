@@ -156,8 +156,8 @@ contract eLibrary {
          }
 
     }
-}
 
-/*Uint currentYear = (block. timestamp / 31557600) + 1970;
-Aldin Kovačević11:22 AM
-address => uint[] user => godine*/
+    function isAdmin(address _addr) external view returns (bool) {
+        return _addr == admin;
+    }
+}

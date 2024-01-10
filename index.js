@@ -3,23 +3,38 @@ const address = "0x6306Fa39A73947282bc8e225e5F7Fbc04aBA627F"
 
 $('#connect').click(async function () {
     if (window.ethereum) {
+        console.log("Before request");
         let addresses = await window.ethereum.request({ method: 'eth_requestAccounts' });
         window.web3 = new Web3(window.ethereum);
 
+        console.log("After request");
         console.log(addresses);
         $('#connect').hide();
         $('#connectedAddress').css('display', 'block');
         $('#connectedAddress > span').html(addresses[0]);
+
+        window.location.href = 'books.html';
     }
     
-})
-
-document.addEventListener('DOMContentLoaded', () => {
-    // Add click event listener to the "Connect to MetaMask" button
-    document.getElementById('connect').addEventListener('click', () => {
-        // Redirect to the page with books (replace 'books.html' with your actual page)
-        window.location.href = 'books.html';
-    });
-
-
 });
+
+async function checkAdminStatus() {
+    const connectedAddress = (await web3.eth.requestAccounts())[0];
+
+    try {
+        const isAdmin = await contract.methods.isAdmin(connectedAddress).call();
+        console.log(`${connectedAddress} is admin: ${isAdmin}`);
+        
+        // Now you can perform actions based on the user's role
+        if (isAdmin) {
+            // Do admin-specific actions
+        } else {
+            // Do user-specific actions
+        }
+    } catch (error) {
+        console.error('Error checking admin status:', error);
+    }
+}
+
+// Trigger the function, for example, when the page loads
+checkAdminStatus();
