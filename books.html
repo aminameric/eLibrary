@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/4.2.2/web3.min.js"></script>
     <title>Books Page</title>
     <link rel="stylesheet" type="text/css" href="css/books.css">
@@ -24,10 +24,43 @@
         <div class="borrow-button">
             <button id="borrow">Borrow Book</button>
         </div>
+
+        <!-- Button to set membership cost (visible only for librarian) -->
+      <div class="set-membership-cost">
+        <button id="setMembershipCostButton">Set Membership Cost</button>
+    </div>
+    </div>
+
+    <div class="overlay"></div>
+    
+    <!-- Your content here -->
+
+    <button id="openMembershipFormButton">Open Membership Form</button>
+
+    <div class="membership-form" id="membershipForm" style="display: none;">
+        <h2>Membership Form</h2>
+        <!-- Include your form fields here -->
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br>
+        <label for="surname">Surname:</label>
+        <input type="text" id="surname" name="surname" required><br>
+
+        <label for="phoneNumber">Phone Number:</label>
+        <input type="text" id="phoneNumber" name="phoneNumber" required><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br>
+
+        <label for="amount">Membership Amount (in Ether):</label>
+        <input type="text" id="amount" name="amount" required><br>
+
+        <button id="payMembershipButton">Pay Membership</button>
+
     </div>
 
     
     <script src="index.js"></script>
+    <script src="books.js"></script>
     
 </body>
 </html>
