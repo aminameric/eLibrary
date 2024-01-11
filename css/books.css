@@ -1,97 +1,92 @@
 body {
-    margin: 0;
-    padding: 0;
-    background-color: blanchedalmond;
-    background-size:cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    height: 70vh;
+    background-color: rgb(254, 242, 227);
+}
+
+.nav {
     width: 100%;
-    position: relative;
-    
-}
-
-.content {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: white;
-    text-align: center;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    z-index: 1; /* Ensure the content is above the overlay */
-}
-
-
-.books-container {
+    height: auto;
+    padding: 15px 40px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 50px;
-}
-
-.book-list {
-    width: 30%;
-    display: flex;
-    flex-direction: column;
-}
-
-.book-list h2 {
     font-size: 20px;
 }
 
-.book-list ul {
-    list-style-type: none;
-    padding: 20;
-}
-
-.book-list li {
-    font-size: 16px;
-    margin-bottom: 10px;
-}
-
-.borrow-button {
-    width: 30%;
-    text-align: center;
-}
-
-#borrow {
-    font-size: 18px;
-    padding: 10px;
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-#borrow:hover {
-    background-color: #45a049;
-}
-
-.membership-form {
-    display: none;
-}
-.book {
+.nav-user {
     display: flex;
+    flex-direction: row;
+    justify-content: center;
     align-items: center;
-    margin-bottom: 20px;
 }
 
-.bookdesc{
-    margin-left: 15px;
-    margin-bottom: 30px;
-
-}
-.bookdesc h6 {
-    margin: 5px 0; 
+.nav-user .user-img {
+    width: 20px;
+    height: 20px;
 }
 
+.nav-user .user-type {
+    margin: 0px 0px 0px 10px;
+}
 
-img {
-    width: 60px;
-    height: 80px;
+.books {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.book {
+    width: 25%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-content: center;
+    margin: 10px;
+}
+
+.book img {
+    width: 100px;
+    height: 130px;
+}
+
+.sub {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.membership {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    margin-left: 85%;
+    width: 100%;
+}
+
+.membership-cost {
+    width: 50%;
+}
+
+.books-lib {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 35px;
+}
+
+.book-lib {
+    width: 25%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin: 0px 10px
+}
+
+.right {
+    margin-left: 10px;
 }

@@ -16,10 +16,12 @@ contract eLibrary {
         uint ISBN;
         string title;
         string author;
+        string image;
     }
 
     address private  librarian1;
     address private  librarian2;
+    address private eLibraryAddr;
     uint private membershipCost;
     uint private nextISBN;
 
@@ -29,7 +31,8 @@ contract eLibrary {
     constructor() {
         librarian1 = msg.sender;
         librarian2 = 0x1f84f0D7d7bEC502a7A3e6Cfb725A000b711B329;
-        nextISBN = 0;
+        eLibraryAddr = 0x5B82812d2A15c8a6a4FCb43658E876D73fcc1b7D;
+        nextISBN = 1;
         membershipCost = 500000;
     }
 
@@ -40,8 +43,10 @@ contract eLibrary {
         _;
     }
 
+
+
     modifier isUser(string memory _name, string memory _surname, uint _phoneNumber, string memory _email) {
-        _;
+        require(msg.value == membershipCost, "Not enough resources");
         if(msg.sender != users[msg.sender].addr) {
             users[msg.sender] = User({
                 addr: msg.sender,
@@ -55,22 +60,24 @@ contract eLibrary {
         } else {
             users[msg.sender].subscribed = true;
         }
+        _;
     }
 
     function payingMembership(string memory _name, string memory _surname, uint _phoneNumber, string memory _email) external payable isUser(_name, _surname, _phoneNumber, _email) {
-        require(msg.value == membershipCost, "Not enough resources");
-        (bool payment,) = librarian1.call{value: msg.value}("");
+        (bool payment,) = eLibraryAddr.call{value: msg.value}("");
         require(payment, "Failed to pay the membership subscription!");
 
         emit payedMembership(_name, _surname);
     }
 
-    function addBook(string memory _title, string memory _author) external isLibrarian {
+    function addBook(string memory _title, string memory _author, string memory _image) external isLibrarian {
         books[nextISBN] = Book({
             ISBN: nextISBN,
             title: _title,
-            author: _author
+            author: _author,
+            image: _image
         });
+        nextISBN++;
     }
 
     function brrowBook(uint _isbn) external {
@@ -103,5 +110,9 @@ contract eLibrary {
 
     function getMyBooks() external view returns(uint[] memory) {
         return users[msg.sender].borrowedBooks;
+    }
+
+    function getUser() external view returns(User memory) {
+        return users[msg.sender];
     }
 }
