@@ -157,7 +157,7 @@ contract eLibrary {
 
     }
 
-    function isAdmin(address _addr) external view returns (bool) {
-        return _addr == admin;
+    function isLibrarian(address _addr) external view returns (bool) {
+        return _addr == librarian;
     }
 }

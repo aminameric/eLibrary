@@ -18,23 +18,27 @@ $('#connect').click(async function () {
     
 });
 
-async function checkAdminStatus() {
-    const connectedAddress = (await web3.eth.requestAccounts())[0];
-
+/*async function userInfo() {
+    
+    const contract = new web3.eth.Contract(abi, address);
+    
     try {
-        const isAdmin = await contract.methods.isAdmin(connectedAddress).call();
-        console.log(`${connectedAddress} is admin: ${isAdmin}`);
+        const isLibrarian = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        console.log(`${connectedAddress} is librarian: ${isLibrarian}`);
         
-        // Now you can perform actions based on the user's role
-        if (isAdmin) {
-            // Do admin-specific actions
-        } else {
-            // Do user-specific actions
-        }
-    } catch (error) {
-        console.error('Error checking admin status:', error);
-    }
-}
+        // Update UI based on role
+        const profileUserInfo = document.getElementById('profileUser');
 
-// Trigger the function, for example, when the page loads
-checkAdminStatus();
+        if (isLibrarian) {
+            profileUserInfo.innerText = 'Admin';
+        } else {
+            profileUserInfo.innerText = 'Member';
+        }
+
+        // Use the correct variable 'isLibrarian' in the log
+        console.log(`${connectedAddress} is librarian: ${isLibrarian}`);
+    } catch (error) {
+        console.error('Error checking user role:', error);
+    }
+}*/
+
