@@ -25,6 +25,7 @@ contract eLibrary {
 
     event BookBorrowed (address member, uint isbn);
     event logReturnedBook(uint _isbn, address memberAddress);
+    event BookAdded(uint _isbn, string _title, _string author);
 
     constructor(){  //definisala sam librariana i stavila da je on message sender
         librarian = msg.sender;  
@@ -118,9 +119,11 @@ contract eLibrary {
                                          title: _title,
                                          author: _author
         });
-    }
 
-    
+        emit BookAdded(_isbn, _title, _author);
+
+    }
+ 
     function removeBook (uint _isbn) external isLibrarian isBookAvailable(_isbn) {
         delete booksInLibrary[_isbn];
     }
@@ -156,8 +159,12 @@ contract eLibrary {
          }
 
     }
-}
 
-/*Uint currentYear = (block. timestamp / 31557600) + 1970;
-Aldin Kovačević11:22 AM
-address => uint[] user => godine*/
+    function isLibrarian(address _addr) external view returns (bool) {
+        return _addr == librarian;
+    }
+
+    function getMembershipCost() external view returns (uint) {
+        return membershipCost;
+    }
+}

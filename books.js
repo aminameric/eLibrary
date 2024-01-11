@@ -23,6 +23,11 @@ async function setMembershipCost(newCost, account) {
             await eLibraryContract.methods.setMembershipCost(costInWei).send({ from: account });
 
             console.log('Membership cost set successfully.');
+
+            //Fetch and display the updated membership cost
+            const membershipCost = await eLibraryContract.methods.getMembershipCost().call();
+            $('#membershipCost').text(`Membership Cost: ${web3.utils.fromWei(membershipCost, 'ether')} ETH`);
+
         } else {
             console.log('Only the librarian can set the membership cost.');
         }
