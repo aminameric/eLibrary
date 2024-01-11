@@ -69,3 +69,7 @@ body {
 #borrow:hover {
     background-color: #45a049;
 }
+
+.membership-form {
+    display: none;
+}

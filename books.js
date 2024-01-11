@@ -59,71 +59,85 @@ document.addEventListener('DOMContentLoaded', async function () {
 });
 
 
+const openMembershipFormButton = document.getElementById('openMembershipFormButton');
+    const membershipForm = document.getElementById('membershipForm');
 
-// Simulated contract address and ABI (replace with your actual contract address and ABI)
-const contractAddress = "0x6306Fa39A73947282bc8e225e5F7Fbc04aBA627F";
-const contractABI = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"member","type":"address"},{"indexed":false,"internalType":"uint256","name":"isbn","type":"uint256"}],"name":"BookBorrowed","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"_isbn","type":"uint256"},{"indexed":false,"internalType":"address","name":"memberAddress","type":"address"}],"name":"logReturnedBook","type":"event"},{"inputs":[{"internalType":"uint256","name":"_isbn","type":"uint256"},{"internalType":"string","name":"_title","type":"string"},{"internalType":"string","name":"_author","type":"string"}],"name":"addBook","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_isbn","type":"uint256"}],"name":"borrowBook","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"_name","type":"string"},{"internalType":"string","name":"_surname","type":"string"},{"internalType":"uint256","name":"_phoneNumber","type":"uint256"},{"internalType":"string","name":"_email","type":"string"}],"name":"payingMembership","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_isbn","type":"uint256"}],"name":"removeBook","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_addr","type":"address"}],"name":"removeMember","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_isbn","type":"uint256"}],"name":"returnBook","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_cost","type":"uint256"}],"name":"setMembershipCost","outputs":[],"stateMutability":"nonpayable","type":"function"}] // Replace with your actual ABI
+// Add a click event listener to the button
+openMembershipFormButton.addEventListener('click', function () {
+    // Toggle the display of the membership form
+    membershipForm.style.display = membershipForm.style.display === 'none' ? 'block' : 'none';
+});
 
-// Simulated web3 instance (replace with your actual web3 initialization)
-const web3 = new Web3(window.ethereum);
-
-// Simulated contract instance (replace with your actual contract instance)
-const yourSmartContract = new web3.eth.Contract(contractABI, contractAddress);
-
-// Define the payingMembership function
-async function payingMembership(name, surname, phoneNumber, email, amount) {
+async function payMembership(name, surname, phoneNumber, email, amount) {
     try {
-        // Convert the amount to wei
-        const amountInWei = web3.utils.toWei(amount, 'ether');
+        // Connect to MetaMask or another Ethereum wallet
+        if (window.ethereum) {
+            window.web3 = new Web3(ethereum);
+            // Request account access
+            await ethereum.enable();
+            const accounts = await web3.eth.getAccounts();
+            const userAddress = accounts[0];
 
-        // Simulated smart contract function call (replace with your actual function call)
-        const result = await yourSmartContract.methods
-        .payingMembership(name, surname, phoneNumber, email)
-        .send({ from: accounts[0], value: amountInWei });
+            // Your contract address (replace with your actual value)
+            const contractAddress = '6306Fa39A73947282bc8e225e5F7Fbc04aBA627F';
+            const contractABI = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"member","type":"address"},{"indexed":false,"internalType":"uint256","name":"isbn","type":"uint256"}],"name":"BookBorrowed","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"_isbn","type":"uint256"},{"indexed":false,"internalType":"address","name":"memberAddress","type":"address"}],"name":"logReturnedBook","type":"event"},{"inputs":[{"internalType":"uint256","name":"_isbn","type":"uint256"},{"internalType":"string","name":"_title","type":"string"},{"internalType":"string","name":"_author","type":"string"}],"name":"addBook","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_isbn","type":"uint256"}],"name":"borrowBook","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"_name","type":"string"},{"internalType":"string","name":"_surname","type":"string"},{"internalType":"uint256","name":"_phoneNumber","type":"uint256"},{"internalType":"string","name":"_email","type":"string"}],"name":"payingMembership","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_isbn","type":"uint256"}],"name":"removeBook","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_addr","type":"address"}],"name":"removeMember","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_isbn","type":"uint256"}],"name":"returnBook","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_cost","type":"uint256"}],"name":"setMembershipCost","outputs":[],"stateMutability":"nonpayable","type":"function"}]
 
+            const contract = new web3.eth.Contract(contractABI, contractAddress);
 
-        // Handle the result or emit an event for further processing
-        console.log('Paying membership successful:', result);
+            // Proceed with the payment and add the user
+            const result = await contract.methods.payingMembership(name, surname, phoneNumber, email)
+                .send({ from: userAddress, value: web3.utils.toWei(amount, 'ether') });
+
+            // Handle the result as needed
+            console.log('Membership payment successful:', result);
+
+        } else {
+            console.error('MetaMask is not installed. Please install it to proceed.');
+        }
     } catch (error) {
-        console.error('Error in payingMembership:', error);
-        throw error; // Rethrow the error for further handling
+        console.error('Failed to pay membership:', error);
+        // Handle the error as needed
+        throw error;
     }
 }
 
-document.getElementById('payMembershipButton').addEventListener('click', async () => {
-    let accounts;
+
+
+document.addEventListener('DOMContentLoaded', async function () {
     try {
-        // Check if MetaMask is available
-        if (window.ethereum) {
-            // Request accounts from MetaMask
-            accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-            const name = document.getElementById('name').value;
-            const surname = document.getElementById('surname').value;
-            const phoneNumber = document.getElementById('phoneNumber').value;
-            const email = document.getElementById('email').value;
-            const amount = document.getElementById('amount').value;
+        // Request account access
+        await ethereum.request({ method: 'eth_requestAccounts' });
+        const accounts = await ethereum.request({ method: 'eth_accounts' });
+        const userAddress = accounts[0];
 
-            // Call the payingMembership function (replace with your actual logic)
-            await payingMembership(name, surname, phoneNumber, email, amount);
+        // Your contract address (replace with your actual value)
+        const contractAddress = '6306Fa39A73947282bc8e225e5F7Fbc04aBA627F';
+        const contractABI = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"member","type":"address"},{"indexed":false,"internalType":"uint256","name":"isbn","type":"uint256"}],"name":"BookBorrowed","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"_isbn","type":"uint256"},{"indexed":false,"internalType":"address","name":"memberAddress","type":"address"}],"name":"logReturnedBook","type":"event"},{"inputs":[{"internalType":"uint256","name":"_isbn","type":"uint256"},{"internalType":"string","name":"_title","type":"string"},{"internalType":"string","name":"_author","type":"string"}],"name":"addBook","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_isbn","type":"uint256"}],"name":"borrowBook","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"_name","type":"string"},{"internalType":"string","name":"_surname","type":"string"},{"internalType":"uint256","name":"_phoneNumber","type":"uint256"},{"internalType":"string","name":"_email","type":"string"}],"name":"payingMembership","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_isbn","type":"uint256"}],"name":"removeBook","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_addr","type":"address"}],"name":"removeMember","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_isbn","type":"uint256"}],"name":"returnBook","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_cost","type":"uint256"}],"name":"setMembershipCost","outputs":[],"stateMutability":"nonpayable","type":"function"}];  // Replace with your actual ABI
 
-            // Assuming payingMembership function updates the user information, you can add the user to the local representation
-            const userId = accounts[0]; // Use the accounts obtained from MetaMask
-            libraryUsers[userId] = {
-                userId,
-                name,
-                surname,
-                phoneNumber,
-                email,
-            };
+        const contract = new web3.eth.Contract(contractABI, contractAddress);
 
-            console.log('User added to libraryUsers:', libraryUsers[userId]);
-        } else {
-            console.error('MetaMask not available');
-        }
+        // Add click event listener to the "Pay Membership" button
+        document.getElementById('payMembershipButton').addEventListener('click', async () => {
+            try {
+                // Get user inputs (name, surname, phoneNumber, email, amount)
+                const name = document.getElementById('name').value;
+                const surname = document.getElementById('surname').value;
+                const phoneNumber = document.getElementById('phoneNumber').value;
+                const email = document.getElementById('email').value;
+                const amount = document.getElementById('amount').value;
+
+                // Call the payingMembership function
+                await contract.methods.payingMembership(name, surname, phoneNumber, email)
+                    .send({ from: userAddress, value: web3.utils.toWei(amount, 'ether') });
+
+                console.log('Membership payment successful.');
+            } catch (error) {
+                console.error('Failed to pay membership:', error.message);
+                // Handle the error as needed
+            }
+        });
+
     } catch (error) {
-        console.error('Error in button click event:', error);
+        console.error('Error in DOMContentLoaded event:', error);
     }
 });
-
-
-
