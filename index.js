@@ -18,27 +18,7 @@ $('#connect').click(async function () {
     
 });
 
-/*async function userInfo() {
-    
-    const contract = new web3.eth.Contract(abi, address);
-    
-    try {
-        const isLibrarian = await window.ethereum.request({ method: 'eth_requestAccounts' });
-        console.log(`${connectedAddress} is librarian: ${isLibrarian}`);
-        
-        // Update UI based on role
-        const profileUserInfo = document.getElementById('profileUser');
 
-        if (isLibrarian) {
-            profileUserInfo.innerText = 'Admin';
-        } else {
-            profileUserInfo.innerText = 'Member';
-        }
 
-        // Use the correct variable 'isLibrarian' in the log
-        console.log(`${connectedAddress} is librarian: ${isLibrarian}`);
-    } catch (error) {
-        console.error('Error checking user role:', error);
-    }
-}*/
+
 
