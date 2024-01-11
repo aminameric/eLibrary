@@ -34,6 +34,8 @@ body {
 
 .book-list {
     width: 30%;
+    display: flex;
+    flex-direction: column;
 }
 
 .book-list h2 {
@@ -72,4 +74,24 @@ body {
 
 .membership-form {
     display: none;
+}
+.book {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.bookdesc{
+    margin-left: 15px;
+    margin-bottom: 30px;
+
+}
+.bookdesc h6 {
+    margin: 5px 0; 
+}
+
+
+img {
+    width: 60px;
+    height: 80px;
 }
