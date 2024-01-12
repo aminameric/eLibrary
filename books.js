@@ -27,15 +27,50 @@ $(document).ready(async function() {
     $("#borrow-book").click(function() {
         borrowBook
     })
+    $("#addBookBtn").click(function(){
+        $("#addBookForm").hide()
+    })
+    $("#pay-mbr").click(function(){
+        $("#payMembershipForm").hide()
+    })
+
+    eventListener();
+    
 })
 
 async function payMembership(name, surname, phoneNumber, email) {
     const contract = new web3.eth.Contract(abi, address);
     let addresses = await window.ethereum.request({ method: 'eth_requestAccounts' });
 
-    contract.methods.payingMembership(name, surname, phoneNumber, email).send({ from: addresses[0], value: 500000 }).then(function (result) {	
+        const result = await contract.methods.payingMembership(name, surname, phoneNumber, email).send({ from: addresses[0], value: 500000 });
         console.log(result);
-    })
+}
+
+async function eventListener () {
+
+    const contract = new web3.eth.Contract(abi, address);
+    let addresses = await window.ethereum.request({ method: 'eth_requestAccounts' });
+
+    contract.events.payedMembership().on('data', function (event) {
+
+        const name = event.returnValues[0];
+        const surname = event.returnValues[1];
+
+        // Create a success message element
+        const successMessage = document.createElement('div');
+        successMessage.textContent = `Membership payment successful for ${name} ${surname}!`;
+        successMessage.classList.add('success-message');
+
+        // Append the success message element to the body
+        document.body.appendChild(successMessage);
+
+        // Hide the success message after a few seconds (adjust as needed)
+        setTimeout(function () {
+            successMessage.remove();
+        }, 10000); // 5 seconds
+      	
+   })
+
 }
 
 async function addBook(title, author, image) {
@@ -58,7 +93,10 @@ async function getAllBooks() {
     html = ""
     
     for(let i = 1; i < books.length; i++) {
-        let isBorrowed = myBooks.includes(book.ISBN)
+        if(books[i].ISBN == 0) {
+            continue
+        }
+        let isBorrowed = myBooks.includes(books[i].ISBN)
         html += `
             <div class="book">
                 <img src="${books[i].image}"/>
@@ -108,4 +146,6 @@ async function removeBook(bookId){
         console.log(result);
     })
 }
+
+
 
