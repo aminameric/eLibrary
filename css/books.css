@@ -55,14 +55,19 @@ body {
     width: 25%;
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: flex-start;
     align-content: center;
-    margin: 10px;
+    margin-top: 10px;
+    margin-left: 120px;
 }
 
 .book img {
     width: 100px;
     height: 130px;
+}
+
+.book-title {
+    font-weight: bold;
 }
 
 .sub {
@@ -72,6 +77,7 @@ body {
     align-items: center;
     flex-wrap: wrap;
     text-align: center;
+    margin-top: 50px;
 
 }
 
