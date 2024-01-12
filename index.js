@@ -1,11 +1,6 @@
-const abi = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"member","type":"address"},{"indexed":false,"internalType":"uint256","name":"isbn","type":"uint256"}],"name":"BookBorrowed","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"_isbn","type":"uint256"},{"indexed":false,"internalType":"address","name":"memberAddress","type":"address"}],"name":"logReturnedBook","type":"event"},{"inputs":[{"internalType":"uint256","name":"_isbn","type":"uint256"},{"internalType":"string","name":"_title","type":"string"},{"internalType":"string","name":"_author","type":"string"}],"name":"addBook","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_isbn","type":"uint256"}],"name":"borrowBook","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"_name","type":"string"},{"internalType":"string","name":"_surname","type":"string"},{"internalType":"uint256","name":"_phoneNumber","type":"uint256"},{"internalType":"string","name":"_email","type":"string"}],"name":"payingMembership","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_isbn","type":"uint256"}],"name":"removeBook","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_addr","type":"address"}],"name":"removeMember","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_isbn","type":"uint256"}],"name":"returnBook","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_cost","type":"uint256"}],"name":"setMembershipCost","outputs":[],"stateMutability":"nonpayable","type":"function"}]
-const address = "0x6306Fa39A73947282bc8e225e5F7Fbc04aBA627F"
+const abi = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"string","name":"","type":"string"},{"indexed":false,"internalType":"string","name":"","type":"string"}],"name":"payedMembership","type":"event"},{"inputs":[{"internalType":"string","name":"_title","type":"string"},{"internalType":"string","name":"_author","type":"string"},{"internalType":"string","name":"_image","type":"string"}],"name":"addBook","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_isbn","type":"uint256"}],"name":"brrowBook","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"getAllBooks","outputs":[{"components":[{"internalType":"uint256","name":"ISBN","type":"uint256"},{"internalType":"string","name":"title","type":"string"},{"internalType":"string","name":"author","type":"string"},{"internalType":"string","name":"image","type":"string"}],"internalType":"struct eLibrary.Book[]","name":"","type":"tuple[]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getMyBooks","outputs":[{"internalType":"uint256[]","name":"","type":"uint256[]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getUser","outputs":[{"components":[{"internalType":"address","name":"addr","type":"address"},{"internalType":"string","name":"name","type":"string"},{"internalType":"string","name":"surname","type":"string"},{"internalType":"uint256","name":"phoneNumber","type":"uint256"},{"internalType":"string","name":"email","type":"string"},{"internalType":"bool","name":"subscribed","type":"bool"},{"internalType":"uint256[]","name":"borrowedBooks","type":"uint256[]"}],"internalType":"struct eLibrary.User","name":"","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"_name","type":"string"},{"internalType":"string","name":"_surname","type":"string"},{"internalType":"uint256","name":"_phoneNumber","type":"uint256"},{"internalType":"string","name":"_email","type":"string"}],"name":"payingMembership","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_isbn","type":"uint256"}],"name":"removeBook","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_userAddress","type":"address"}],"name":"removeMember","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_isbn","type":"uint256"}],"name":"returnBook","outputs":[],"stateMutability":"nonpayable","type":"function"}]
+const address = "0x0182F0A127F0fB5C2Ed773e08cC2A23a4dB7cd2B"
 
-function isAdmin(address) {
-    // Replace 'your_admin_address' with the actual admin address
-    const adminAddress = '0xdd3738De85d39288b9bf83910430f0D7431665E1';
-    return address.toLowerCase() === adminAddress.toLowerCase();
-}
 
 $('#connect').click(async function () {
     try {
@@ -22,7 +17,9 @@ $('#connect').click(async function () {
             $('#connectedAddress').css('display', 'block');
             $('#connectedAddress > span').html(connectedAddress);
 
-            if (isAdmin(connectedAddress)) {
+            window.location.href = 'books.html';
+
+            /*if (isAdmin(connectedAddress)) {
                 // Display admin content
                 console.log('Librarian logged in');
                 $('#adminContent').show();
@@ -30,14 +27,9 @@ $('#connect').click(async function () {
                 // Display user content
                 console.log('Member logged in');
                 $('#userContent').show();
-            }
+            }*/
         }
     } catch (error) {
         console.error('Error during connection:', error.message);
     }
 });
-
-
-
-
-
